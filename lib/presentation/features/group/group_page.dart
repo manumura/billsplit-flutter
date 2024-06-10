@@ -115,7 +115,6 @@ class GroupPage extends StatelessWidget {
                         child: Stack(
                           children: [
                             Builder(builder: (context) {
-                              print("qqq show nav=${cubit.navPage.index}");
                               switch (cubit.navPage) {
                                 case GroupPageNav.services:
                                   return const ServicesView();
