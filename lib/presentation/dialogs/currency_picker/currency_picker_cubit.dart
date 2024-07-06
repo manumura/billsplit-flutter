@@ -19,7 +19,6 @@ class CurrencyPickerCubit extends BaseCubit {
     return sharedPrefs.recentCurrencies.take(5);
   }
 
-
   CurrencyPickerCubit(this.convertToCurrency) : super.withState(Loading()) {
     loadCurrencies();
     loadCurrenciesAsync();
@@ -28,6 +27,7 @@ class CurrencyPickerCubit extends BaseCubit {
   loadCurrencies() {
     currencies.value =
         _getCurrenciesUseCase.launch().toList().sortedBy((e) => e.symbol);
+    print("qqq ${currencies.value}");
   }
 
   Future loadCurrenciesAsync() async {

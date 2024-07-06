@@ -27,7 +27,7 @@ class ObserveDebtsUseCase {
       final debts = calculator.calculateEffectiveDebt(user);
       final debtsConverted = debts.map((e) {
         final converted = _convertCurrencyUseCase.launch(
-            e.second, Currency.USD().symbol, group.defaultCurrencyState.value);
+            e.second, Currency.usd().symbol, group.defaultCurrencyState.value);
         return Pair(e.first, converted);
       });
       return debtsConverted.where((element) => element.second != 0);

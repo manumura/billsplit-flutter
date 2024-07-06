@@ -12,7 +12,7 @@ class MutableValue<T> extends StatelessWidget {
     super.key,
     required MutableState<T> mutableValue,
     required this.builder,
-  }): _stream = mutableValue.stateStream,
+  })  : _stream = mutableValue.stateStream,
         _mutableValue = mutableValue;
 
   @override
@@ -116,11 +116,10 @@ class MutableState<T> {
     });
   }
 
-  Stream<T> combine<V extends MutableState>(V other,
-      T Function(T, T) transform) {
-    return this
-        .stateStream
-        .zipWith(other.stateStream, (t, s) => transform(t, s));
+  Stream<T> combine<V extends MutableState>(
+      V other, T Function(T, T) transform) {
+    return CombineLatestStream(
+        [stateStream, other.stateStream], (x) => transform(value, other.value));
   }
 
   @override
@@ -138,7 +137,12 @@ extension MutableListExt<T> on Iterable<T> {
 }
 
 extension MutableValueExt<T> on MutableState<T> {
-  Widget builder(
-      {Key? key, required Widget Function(BuildContext, T) builder,}) =>
-      MutableValue<T>(mutableValue: this, builder: builder,);
+  Widget builder({
+    Key? key,
+    required Widget Function(BuildContext, T) builder,
+  }) =>
+      MutableValue<T>(
+        mutableValue: this,
+        builder: builder,
+      );
 }

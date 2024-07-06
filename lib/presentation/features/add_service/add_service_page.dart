@@ -30,7 +30,11 @@ class AddServicePage extends StatefulWidget {
   final SubscriptionService service;
   final Group group;
 
-  const AddServicePage({super.key, required this.service, required this.group});
+  const AddServicePage({
+    super.key,
+    required this.service,
+    required this.group,
+  });
 
   @override
   State<AddServicePage> createState() => _AddServicePageState();
@@ -328,8 +332,11 @@ class _AddServicePageState extends SafeState<AddServicePage> {
                                       builder: (context) => Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: ParticipantsPickerDialog(
-                                          participants: service.participantsState.value.toList(),
-                                          people: cubit.group.peopleState.value,
+                                          participantsState: service.participantsState,
+                                          people: cubit.group.peopleState.stateStream,
+                                          currencySymbol: service.currencyState.value,
+                                          description: service.nameState.value,
+                                          totalExpense: cubit.service.monthlyExpenseState.value,
                                         ),
                                       ),
                                     );

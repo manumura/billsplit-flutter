@@ -4,7 +4,7 @@ import 'package:billsplit_flutter/domain/models/person.dart';
 import 'package:billsplit_flutter/domain/models/shared_expense.dart';
 import 'package:billsplit_flutter/extensions.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/bloc/add_expense_bloc.dart';
-import 'package:billsplit_flutter/presentation/features/add_expense/simple/simple_expense_participants_vioew.dart';
+import 'package:billsplit_flutter/presentation/features/add_expense/simple/simple_expense_participants_view.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/simple/single_expense_field.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/widgets/date_picker_view.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/widgets/description_text_field.dart';

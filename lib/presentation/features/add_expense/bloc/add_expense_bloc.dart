@@ -6,6 +6,7 @@ import 'package:billsplit_flutter/domain/models/scanned_receipt_item.dart';
 import 'package:billsplit_flutter/domain/models/shared_expense.dart';
 import 'package:billsplit_flutter/domain/use_cases/events/add_event_usecase.dart';
 import 'package:billsplit_flutter/domain/use_cases/events/delete_expense_usecase.dart';
+import 'package:billsplit_flutter/extensions.dart';
 import 'package:billsplit_flutter/presentation/base/bloc/base_cubit.dart';
 import 'package:billsplit_flutter/presentation/base/bloc/base_state.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/bloc/add_expense_state.dart';
@@ -18,8 +19,7 @@ class AddExpenseBloc extends BaseCubit {
   final _deleteExpenseUseCase = DeleteExpenseUseCase();
 
   Stream<Iterable<Person>> get peopleStream {
-    return group.peopleState.combine(groupExpense.tempParticipantsState,
-        (people, temps) => [...people, ...temps]);
+    return group.peopleState.combine(groupExpense.tempParticipantsState, (x, y) => [...x, ...y]);
   }
 
   Iterable<Person> get people =>
@@ -40,9 +40,9 @@ class AddExpenseBloc extends BaseCubit {
   AddExpenseBloc(this.group, this.groupExpense) : super.withState(Main()) {
     if (groupExpense.id.isEmpty) {
       final groupDefCurrencyRate = sharedPrefs
-          .latestExchangeRates[group.defaultCurrencyState.value.toUpperCase()];
+          .latestExchangeRates[group.defaultCurrencyState.value];
       if (groupDefCurrencyRate == null) {
-        updateCurrency(Currency.USD());
+        updateCurrency(Currency.usd());
       } else {
         updateCurrency(Currency(
             symbol: group.defaultCurrencyState.value,
@@ -130,6 +130,5 @@ class AddExpenseBloc extends BaseCubit {
 
   void onAddTempParticipant(String name, SharedExpense sharedExpense) {
     groupExpense.addTempParticipant(name, sharedExpense);
-    update();
   }
 }
