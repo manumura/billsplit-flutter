@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class ParticipantsPickerDialog extends StatelessWidget {
   final MutableListState<Person> participantsState;
-  final Stream<Iterable<Person>> people;
+  final MutableState<Iterable<Person>> people;
   final num totalExpense;
   final String currencySymbol;
   final Widget? extraAction;
@@ -44,18 +44,16 @@ class ParticipantsPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final allowTempParticipants = onAddTempParticipant != null;
-    return StreamBuilder<Iterable<Person>>(
-      stream: people,
-      initialData: const [],
-      builder: (context, snapshot) {
-        final people = snapshot.requireData;
-        return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          appBar: _appBar(context, people),
-          body: MutableValue(
-              mutableValue: participantsState,
-              builder: (context, participants) {
-                return Padding(
+    return MutableValue<Iterable<Person>>(
+      mutableValue: people,
+      builder: (context, people) {
+        return MutableValue(
+            mutableValue: participantsState,
+            builder: (context, participants) {
+              return Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                appBar: _appBar(context, people),
+                body: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
                     child: Column(
@@ -87,9 +85,9 @@ class ParticipantsPickerDialog extends StatelessWidget {
                       ],
                     ),
                   ),
-                );
-              }),
-        );
+                ),
+              );
+            });
       },
     );
   }
@@ -99,11 +97,19 @@ class ParticipantsPickerDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       scrolledUnderElevation: 0,
       title: Text(description),
+      leading: IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        disabledColor: Theme.of(context).disabledColor,
+        color: Theme.of(context).colorScheme.onSurface,
+        icon: const Icon(Icons.arrow_back),
+      ),
       actions: [
         if (showSubmit)
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop(participantsState);
+              Navigator.of(context).pop(participantsState.value);
             },
             disabledColor: Theme.of(context).disabledColor,
             color: Theme.of(context).colorScheme.onSurface,

@@ -333,7 +333,7 @@ class _AddServicePageState extends SafeState<AddServicePage> {
                                         padding: const EdgeInsets.all(16.0),
                                         child: ParticipantsPickerDialog(
                                           participantsState: service.participantsState,
-                                          people: cubit.group.peopleState.stateStream,
+                                          people: cubit.group.peopleState,
                                           currencySymbol: service.currencyState.value,
                                           description: service.nameState.value,
                                           totalExpense: cubit.service.monthlyExpenseState.value,
