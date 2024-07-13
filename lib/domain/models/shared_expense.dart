@@ -81,6 +81,10 @@ class SharedExpense {
     descriptionState.value = _description;
   }
 
+  void resetParticipants() {
+    participantsState.value = _participants;
+  }
+
   bool compareData(SharedExpense other) {
     return participantsState.value.equals(other.participantsState.value) &&
         expenseState.value == other.expenseState.value &&

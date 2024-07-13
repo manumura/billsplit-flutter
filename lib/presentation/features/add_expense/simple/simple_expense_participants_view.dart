@@ -83,7 +83,7 @@ class SimpleExpenseParticipantsView extends StatelessWidget {
                   cubit.groupExpense.sharedExpensesState.value;
               final route = ParticipantsPickerDialog(
                 participantsState: expense.participantsState,
-                people: cubit.peopleStream,
+                peopleState: cubit.peopleStream,
                 currencySymbol: cubit.groupExpense.currencyState.value.symbol,
                 totalExpense: cubit.groupExpense.total,
                 description: cubit.groupExpense.descriptionState.value,
@@ -91,7 +91,8 @@ class SimpleExpenseParticipantsView extends StatelessWidget {
                   cubit.onAddTempParticipant(name, sharedExpense.first);
                 },
               );
-              await Navigator.of(context).push(slideUpRoute(route, duration: 100));
+              await Navigator.of(context)
+                  .push(slideUpRoute(route, duration: 100));
             },
             child: const Icon(
               Icons.group,

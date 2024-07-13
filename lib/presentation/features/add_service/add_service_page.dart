@@ -325,7 +325,7 @@ class _AddServicePageState extends SafeState<AddServicePage> {
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
                                   onPressed: () async {
-                                    final response = await showModalBottomSheet(
+                                    await showModalBottomSheet(
                                       context: context,
                                       backgroundColor:
                                           Theme.of(context).colorScheme.surface,
@@ -333,16 +333,13 @@ class _AddServicePageState extends SafeState<AddServicePage> {
                                         padding: const EdgeInsets.all(16.0),
                                         child: ParticipantsPickerDialog(
                                           participantsState: service.participantsState,
-                                          people: cubit.group.peopleState,
+                                          peopleState: cubit.group.peopleState,
                                           currencySymbol: service.currencyState.value,
                                           description: service.nameState.value,
                                           totalExpense: cubit.service.monthlyExpenseState.value,
                                         ),
                                       ),
                                     );
-                                    if (response is Iterable<Person>) {
-                                      cubit.updateParticipants(response);
-                                    }
                                   },
                                   icon: const Icon(Icons.group),
                                 ),

@@ -174,7 +174,7 @@ class _SharedExpenseViewState extends SafeState<SharedExpenseView> {
     final cubit = context.read<AddExpenseBloc>();
     final route = ParticipantsPickerDialog(
         participantsState: widget.sharedExpense.participantsState,
-        people: cubit.peopleStream,
+        peopleState: cubit.peopleStream,
         currencySymbol: cubit.groupExpense.currencyState.value.symbol,
         totalExpense: cubit.groupExpense.total,
         description: widget.sharedExpense.descriptionState.value,
