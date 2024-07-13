@@ -228,33 +228,7 @@ class ParticipantsPickerDialog extends StatelessWidget {
                 ),
               ),
             ),
-            if (isTemp)
-              IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Scaffold(
-                          body: Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                TextButton(
-                                    onPressed: () {},
-                                    child: const Text("Edit name")),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: const Text("Delete temp user"))
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                },
-                icon: const Icon(Icons.settings, size: 15,),
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+            if (isTemp) _tempSettings(context),
             const SizedBox(width: 8),
             Checkbox(
               fillColor: WidgetStateProperty.resolveWith((states) {
@@ -274,6 +248,38 @@ class ParticipantsPickerDialog extends StatelessWidget {
         ),
         const SizedBox(height: 16)
       ],
+    );
+  }
+
+  Widget _tempSettings(BuildContext context) {
+    return const SizedBox(); // Disabled until I figure out a way to handle this. See Trello#146
+    return IconButton(
+      onPressed: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Scaffold(
+                body: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                          onPressed: () {}, child: const Text("Edit name")),
+                      TextButton(
+                          onPressed: () {},
+                          child: const Text("Delete temp user"))
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+      icon: const Icon(
+        Icons.settings,
+        size: 15,
+      ),
+      color: Theme.of(context).colorScheme.onSurface,
     );
   }
 }
