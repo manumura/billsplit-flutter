@@ -96,8 +96,10 @@ class ApiService {
     return AddFriendResponse.fromJson(response!).friend;
   }
 
-  Future respondToFriendRequest(
-      {required String friendUid, required bool accept}) async {
+  Future respondToFriendRequest({
+    required String friendUid,
+    required bool accept,
+  }) async {
     final body = RespondToFriendRequestRequest(
         accept: accept, friendUid: friendUid, requestId: "");
     await _client.post("/friendRequest", body.toJson());

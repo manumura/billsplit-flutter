@@ -38,7 +38,8 @@ class AdvancedExpensePage extends StatelessWidget with WidgetsBindingObserver {
                     mutableValue: groupExpense.sharedExpensesState,
                     builder: (context, sharedExpenses) {
                       return SharedExpensesView(
-                          showAll: sharedExpenses.length <= 3);
+                        showAll: sharedExpenses.length <= 3,
+                      );
                     }),
                 const SizedBox(height: 4),
                 Align(

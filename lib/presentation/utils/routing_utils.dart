@@ -16,10 +16,11 @@ Route slideLeftRoute(Widget page) {
       });
 }
 
-Route slideUpRoute(Widget page, {String routeName = ""}) {
+Route slideUpRoute(Widget page, {String routeName = "", int duration = 300}) {
   return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => page,
       settings: RouteSettings(name: "/$routeName"),
+      transitionDuration: Duration(milliseconds: duration),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 1.0);
         const end = Offset.zero;

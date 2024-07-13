@@ -1,3 +1,4 @@
+import 'package:billsplit_flutter/domain/models/currency.dart';
 import 'package:billsplit_flutter/domain/models/person.dart';
 import 'package:billsplit_flutter/presentation/mutable_state.dart';
 
@@ -82,6 +83,6 @@ class Group {
           createdBy: Person.dummy(2),
           timestamp: 0,
           lastUpdated: 0,
-          defaultCurrency: "usd",
+          defaultCurrency: "USD",
         );
 }

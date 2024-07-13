@@ -8,7 +8,6 @@ import 'package:billsplit_flutter/presentation/mutable_state.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseCurrencyButton extends StatelessWidget {
-
   const ExpenseCurrencyButton({super.key});
 
   @override
@@ -40,8 +39,10 @@ class ExpenseCurrencyButton extends StatelessWidget {
 
           if (context.mounted) {
             final response = await Navigator.of(context).push(
-                CurrencyPickerDialog.getRoute(
-                    convertToCurrency: cubit.group.defaultCurrencyState.value));
+              CurrencyPickerDialog.getRoute(
+                convertToCurrency: cubit.group.defaultCurrencyState.value,
+              ),
+            );
             if (response is Currency) {
               cubit.updateCurrency(response);
             }
@@ -52,14 +53,13 @@ class ExpenseCurrencyButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MutableValue(
-              mutableValue: cubit.groupExpense.currencyState,
-              builder: (context, currency) {
-                return Text(
-                  currency.symbol.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelSmall,
-                );
-              }
-            ),
+                mutableValue: cubit.groupExpense.currencyState,
+                builder: (context, currency) {
+                  return Text(
+                    currency.symbol.toUpperCase(),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  );
+                }),
           ],
         ),
       ),

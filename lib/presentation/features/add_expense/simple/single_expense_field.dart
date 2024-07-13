@@ -12,16 +12,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SingleExpenseField extends StatefulWidget {
   final SharedExpense expense;
 
-  const SingleExpenseField(
-      {super.key, required this.expense});
+  const SingleExpenseField({
+    super.key,
+    required this.expense,
+  });
 
   @override
   State<SingleExpenseField> createState() => _SingleExpenseFieldState();
 }
 
 class _SingleExpenseFieldState extends State<SingleExpenseField> {
-  late final textEditingController =
-      ExpenseTextFieldController(text: widget.expense.expenseState.value.fmtTextField());
+  late final textEditingController = ExpenseTextFieldController(
+      text: widget.expense.expenseState.value.fmtTextField());
 
   @override
   Widget build(BuildContext context) {

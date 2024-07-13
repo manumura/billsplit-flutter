@@ -32,7 +32,7 @@ class OnboardingBloc extends BaseCubit {
   ];
 
   String _name = "";
-  Currency currency = Currency.USD();
+  Currency currency = Currency.usd();
   File? displayPhoto;
   PhoneNumber? phoneNumber;
 

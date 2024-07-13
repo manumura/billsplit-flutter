@@ -1,10 +1,12 @@
 class Currency {
-  final String symbol;
+  final String _symbol;
   final num rate;
 
-  Currency({required this.symbol, required this.rate});
+  Currency({required String symbol, required this.rate}) : _symbol = symbol;
 
-  factory Currency.USD() => Currency(symbol: "usd", rate: 1);
+  factory Currency.usd() => Currency(symbol: "usd", rate: 1);
+
+  String get symbol => _symbol.toUpperCase();
 
   @override
   bool operator ==(Object other) {

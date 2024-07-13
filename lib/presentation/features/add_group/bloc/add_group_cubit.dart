@@ -18,7 +18,7 @@ class AddGroupCubit extends BaseCubit {
   final _addGroupUseCase = AddGroupUseCase();
 
   final groupName = "".obs();
-  final currency = Currency.USD().symbol.obs();
+  final currency = Currency.usd().symbol.obs();
   final people = <Person>[].obsList();
 
   void onAddPerson(Person person) {

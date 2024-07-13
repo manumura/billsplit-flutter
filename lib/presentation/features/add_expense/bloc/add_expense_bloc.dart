@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:billsplit_flutter/domain/models/currency.dart';
 import 'package:billsplit_flutter/domain/models/group.dart';
 import 'package:billsplit_flutter/domain/models/group_expense_event.dart';
@@ -9,21 +11,16 @@ import 'package:billsplit_flutter/domain/use_cases/events/delete_expense_usecase
 import 'package:billsplit_flutter/presentation/base/bloc/base_cubit.dart';
 import 'package:billsplit_flutter/presentation/base/bloc/base_state.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/bloc/add_expense_state.dart';
+import 'package:billsplit_flutter/presentation/mutable_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AddExpenseBloc extends BaseCubit {
-  final Group group;
-  final GroupExpense groupExpense;
   final _addExpenseUseCase = AddEventUseCase();
   final _deleteExpenseUseCase = DeleteExpenseUseCase();
 
-  Stream<Iterable<Person>> get peopleStream {
-    return group.peopleState.combine(groupExpense.tempParticipantsState,
-        (people, temps) => [...people, ...temps]);
-  }
-
-  Iterable<Person> get people =>
-      [...group.peopleState.value, ...groupExpense.tempParticipantsState.value];
+  final Group group;
+  final GroupExpense groupExpense;
+  final MutableState<Iterable<Person>> peopleStream = <Person>[].obs();
 
   Stream<bool> get individualExpenseStream {
     final participantsStream = groupExpense.sharedExpensesState.value
@@ -39,16 +36,21 @@ class AddExpenseBloc extends BaseCubit {
 
   AddExpenseBloc(this.group, this.groupExpense) : super.withState(Main()) {
     if (groupExpense.id.isEmpty) {
-      final groupDefCurrencyRate = sharedPrefs
-          .latestExchangeRates[group.defaultCurrencyState.value.toUpperCase()];
+      final groupDefCurrencyRate =
+          sharedPrefs.latestExchangeRates[group.defaultCurrencyState.value];
       if (groupDefCurrencyRate == null) {
-        updateCurrency(Currency.USD());
+        updateCurrency(Currency.usd());
       } else {
         updateCurrency(Currency(
             symbol: group.defaultCurrencyState.value,
             rate: groupDefCurrencyRate));
       }
     }
+    group.peopleState
+        .combine(groupExpense.tempParticipantsState, (x, y) => [...x, ...y])
+        .listen((data) {
+      peopleStream.value = data;
+    }).addTo(compositeSubscription);
   }
 
   void addExpense() {
@@ -130,6 +132,5 @@ class AddExpenseBloc extends BaseCubit {
 
   void onAddTempParticipant(String name, SharedExpense sharedExpense) {
     groupExpense.addTempParticipant(name, sharedExpense);
-    update();
   }
 }

@@ -23,7 +23,6 @@ class EventsView extends StatelessWidget {
           loaderWidget: const SizedBox(),
           stream: cubit.getEventsStream(),
           builder: (_, events) {
-            print("qqq rebuild state=${state.runtimeType}");
             if (events.isEmpty) {
               return Center(
                   child: Text(

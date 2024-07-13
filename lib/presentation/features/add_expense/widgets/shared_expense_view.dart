@@ -10,6 +10,7 @@ import 'package:billsplit_flutter/presentation/dialogs/participant_picker/partic
 import 'package:billsplit_flutter/presentation/features/add_expense/bloc/add_expense_bloc.dart';
 import 'package:billsplit_flutter/presentation/features/add_expense/widgets/shared_expense_description_view.dart';
 import 'package:billsplit_flutter/presentation/mutable_state.dart';
+import 'package:billsplit_flutter/presentation/utils/routing_utils.dart';
 import 'package:billsplit_flutter/utils/list_position.dart';
 import 'package:billsplit_flutter/utils/safe_stateful_widget.dart';
 import 'package:billsplit_flutter/utils/utils.dart';
@@ -62,12 +63,18 @@ class _SharedExpenseViewState extends SafeState<SharedExpenseView> {
               cubit.removeSharedExpense(widget.sharedExpense);
             },
             background: RoundedListItem(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .background,
               child: Row(
                 children: [
                   const Expanded(child: SizedBox()),
                   Icon(Icons.delete,
-                      color: Theme.of(context).colorScheme.error),
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .error),
                 ],
               ),
             ),
@@ -94,7 +101,8 @@ class _SharedExpenseViewState extends SafeState<SharedExpenseView> {
                               child: ExpenseTextField(
                                 showErrorText: false,
                                 canBeZero: true,
-                                fontSize: Theme.of(context)
+                                fontSize: Theme
+                                    .of(context)
                                     .textTheme
                                     .labelLarge
                                     ?.fontSize,
@@ -116,14 +124,14 @@ class _SharedExpenseViewState extends SafeState<SharedExpenseView> {
                     },
                     style: ButtonStyle(
                         visualDensity: VisualDensity.compact,
-                        padding: MaterialStateProperty.resolveWith(
-                            (states) => EdgeInsets.zero)),
+                        padding: WidgetStateProperty.resolveWith(
+                                (states) => EdgeInsets.zero)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MutableValue(
                             mutableValue:
-                                widget.sharedExpense.participantsState,
+                            widget.sharedExpense.participantsState,
                             builder: (context, participants) {
                               return ProfilePictureStack(
                                 people: participants,
@@ -164,24 +172,16 @@ class _SharedExpenseViewState extends SafeState<SharedExpenseView> {
 
   void _editParticipants(BuildContext context) async {
     final cubit = context.read<AddExpenseBloc>();
-    final response = await showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ParticipantsPickerDialog(
-            participants: widget.sharedExpense.participantsState.value.toList(),
-            people: cubit.people,
-            onAddTempParticipant: (name) {
-              cubit.onAddTempParticipant(name, widget.sharedExpense);
-            },
-          ),
-        );
-      },
-    );
-    if (response is Iterable<Person>) {
-      cubit.updateParticipantsForExpense(widget.sharedExpense, response);
-    }
+    final route = ParticipantsPickerDialog(
+        participantsState: widget.sharedExpense.participantsState,
+        peopleState: cubit.peopleStream,
+        currencySymbol: cubit.groupExpense.currencyState.value.symbol,
+        totalExpense: cubit.groupExpense.total,
+        description: widget.sharedExpense.descriptionState.value,
+        onAddTempParticipant: (name) {
+          cubit.onAddTempParticipant(name, widget.sharedExpense);
+        });
+    await Navigator.of(context).push(slideUpRoute(route, duration: 100));
   }
 
   @override

@@ -1,4 +1,3 @@
-
 import 'package:billsplit_flutter/data/debt_calculator.dart';
 import 'package:billsplit_flutter/di/get_it.dart';
 import 'package:billsplit_flutter/domain/models/currency.dart';
@@ -17,17 +16,23 @@ class ObserveDebtsUseCase {
 
   /// returns a list of debts to user denoted in group's default currency
   Stream<Iterable<Pair<Person, num>>> observe(Group group) {
-    return _observeEventsUseCase.observe(group.id)
-        .map((events) {
+    return _observeEventsUseCase.observe(group.id).map((events) {
       if (events.isEmpty) return [];
       final temps = _getTemps(events.whereType<GroupExpense>());
-      final people = {...group.peopleState.value, ...group.pastMembersState.value, ...temps};
+      final people = {
+        ...group.peopleState.value,
+        ...group.pastMembersState.value,
+        ...temps
+      };
       final calculator = DebtCalculator.fromCombined(people, events);
       final user = _authRepository.loggedInUser;
       final debts = calculator.calculateEffectiveDebt(user);
       final debtsConverted = debts.map((e) {
         final converted = _convertCurrencyUseCase.launch(
-            e.second, Currency.USD().symbol, group.defaultCurrencyState.value);
+          e.second,
+          Currency.usd().symbol,
+          group.defaultCurrencyState.value,
+        );
         return Pair(e.first, converted);
       });
       return debtsConverted.where((element) => element.second != 0);

@@ -34,11 +34,12 @@ class AddExpensePage extends StatefulWidget with WidgetsBindingObserver {
   final Group group;
   final Page openOnPage;
 
-  const AddExpensePage(
-      {required this.groupExpense,
-      required this.group,
-      this.openOnPage = Page.simple,
-      super.key});
+  const AddExpensePage({
+    required this.groupExpense,
+    required this.group,
+    this.openOnPage = Page.simple,
+    super.key,
+  });
 
   @override
   State<AddExpensePage> createState() => _AddExpensePageState();
@@ -49,7 +50,9 @@ class AddExpensePage extends StatefulWidget with WidgetsBindingObserver {
     if (expense == null) {
       return slideUpRoute(
           AddExpensePage(
-              group: group, groupExpense: GroupExpense.newExpense(user, group)),
+            group: group,
+            groupExpense: GroupExpense.newExpense(user, group),
+          ),
           routeName: routeName);
     } else {
       final numOfSharedExpenses = expense.sharedExpensesState.value.length;

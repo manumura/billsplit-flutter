@@ -30,7 +30,11 @@ class AddServicePage extends StatefulWidget {
   final SubscriptionService service;
   final Group group;
 
-  const AddServicePage({super.key, required this.service, required this.group});
+  const AddServicePage({
+    super.key,
+    required this.service,
+    required this.group,
+  });
 
   @override
   State<AddServicePage> createState() => _AddServicePageState();
@@ -321,21 +325,21 @@ class _AddServicePageState extends SafeState<AddServicePage> {
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
                                   onPressed: () async {
-                                    final response = await showModalBottomSheet(
+                                    await showModalBottomSheet(
                                       context: context,
                                       backgroundColor:
                                           Theme.of(context).colorScheme.surface,
                                       builder: (context) => Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: ParticipantsPickerDialog(
-                                          participants: service.participantsState.value.toList(),
-                                          people: cubit.group.peopleState.value,
+                                          participantsState: service.participantsState,
+                                          peopleState: cubit.group.peopleState,
+                                          currencySymbol: service.currencyState.value,
+                                          description: service.nameState.value,
+                                          totalExpense: cubit.service.monthlyExpenseState.value,
                                         ),
                                       ),
                                     );
-                                    if (response is Iterable<Person>) {
-                                      cubit.updateParticipants(response);
-                                    }
                                   },
                                   icon: const Icon(Icons.group),
                                 ),
