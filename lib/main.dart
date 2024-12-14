@@ -28,11 +28,16 @@ import 'presentation/common/base_bloc_widget.dart';
 late List<CameraDescription> cameras;
 
 Future main() async {
+  print("==== START MAIN ====");
   WidgetsFlutterBinding.ensureInitialized();
+  print("==== SETUP GET_IT ====");
   setupGetIt();
+  print("==== GET CAMERAS ====");
   cameras = await availableCameras();
+  print("==== SET FIREBASE MESSAGING ====");
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  print("==== RUN APP ====");
   runApp(const BillSplitApp());
 }
 
@@ -59,6 +64,7 @@ class _BillSplitAppState extends SafeState<BillSplitApp>
 
   @override
   Widget build(BuildContext context) {
+    print("==== BUILD APP ====");
     return MaterialApp(
       title: 'Splitsby',
       debugShowCheckedModeBanner: false,
